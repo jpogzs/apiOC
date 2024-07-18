@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        // Specify the API endpoint for user data
+        const apiUrl = 'https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskTrafficView/?type=16&value=beingmeasured&type=26&value=true&type=30&value=Test&type=30&value=Pilot&type=18&value=HQ&type=30&value=Training&type=21&value=assignment&';
+        let temp = "";
+        let z = "adsf";
+
+        // Make a GET request using the Fetch API
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(apiData => {
+                // Process the retrieved data
+                console.log('Data:', apiData);
+                // var temp = "";
+                apiData.forEach((itemData) => {
+                    temp += "<tr>";
+                    temp += "<td>" + itemData.reportID + "</td>";
+                    temp += "<td>" + itemData.primaryProductName + "</td>";
+                    // temp += "<td>" + itemData.taskStateID + "</td></tr>";
+                    getText('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskState/id/' + itemData.taskStateID);
+
+                    async function getText(file) {
+                        let x = await fetch(file);
+                        let y = await x.text();
+                        const obj = JSON.parse(y);
+                        z = obj.description;
+                        //console.log(z);
+                        // temp += "<td>" + z + "</td></tr>";
+                        //console.log(temp);
+                        // document.getElementById("demo").innerHTML = z;
+                        return z;
+                    }
+                    getText('file').then((res) => {
+                        console.log(res); // Should print array of the values
+                    });
+
+                    // temp += "<td>" + z + "</td></tr>";
+
+
+
+
+                });
+                document.getElementById('data').innerHTML = temp;
+
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>File #</th>
+                    <th>Product</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

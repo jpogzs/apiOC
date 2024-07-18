@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <p id="demo">Fetch a file to change this text.</p>
+
+    <script>
+        getText('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskState/id/5cce56b9-a844-ef11-a9e3-8dec54269e9a');
+
+        async function getText(file) {
+            let x = await fetch(file);
+            let y = await x.text();
+            const obj = JSON.parse(y);
+            z = obj.description
+            document.getElementById("demo").innerHTML = z;
+        }
+    </script>
+
+</body>
+
+</html>
