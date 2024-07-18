@@ -8,7 +8,7 @@
 <body>
     <script type="text/javascript">
         // Specify the API endpoint for user data
-        const apiUrl = 'https://api.cmh.platform-prod2.evinternal.net/operations-center/api/measurement-items';
+        const apiUrl = 'https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskTrafficView/?type=16&value=beingmeasured&type=26&value=true&type=30&value=Test&type=30&value=Pilot&type=18&value=HQ&type=30&value=Training&type=21&value=assignment&';
 
         // Make a GET request using the Fetch API
         fetch(apiUrl)
@@ -22,11 +22,15 @@
                 // Process the retrieved user data
                 console.log('Data:', apiData);
                 var temp = "";
-                apiData.measurementItems.forEach((itemData) => {
+                apiData.forEach((itemData) => {
                     temp += "<tr>";
-                    temp += "<td>" + itemData.id + "</td>";
-                    temp += "<td>" + itemData.name + "</td>";
-                    temp += "<td>" + itemData.abbreviation + "</td></tr>";
+                    temp += "<td>" + itemData.reportID + "</td>";
+                    temp += "<td>" + itemData.primaryProductName + "</td>";
+                    temp += "<td>" + itemData.dueDate + "</td></tr>";
+                    
+
+
+
                 });
                 document.getElementById('data').innerHTML = temp;
 
@@ -41,9 +45,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>abbreviation</th>
+                    <th>File #</th>
+                    <th>Product</th>
+                    <th>Due Date</th>
                 </tr>
             </thead>
             <tbody id="data">
