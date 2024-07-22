@@ -59,8 +59,6 @@ fetch('https://worldtimeapi.org/api/timezone/PST8PDT')
                             }
 
 
-
-
                             fetch('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskState/id/' + itemData.taskStateID)
                                 .then(response => {
                                     if (!response.ok) {
@@ -89,14 +87,12 @@ fetch('https://worldtimeapi.org/api/timezone/PST8PDT')
                                     let h = Math.floor(timeElapsed / 60);
                                     let m = timeElapsed % 60;
                                     let timeElapsedText = m + " min";
-                                    if (h != 0) {
-                                        timeElapsedText = h + " hr : " + m + " min";
+                                    if (h < 10) {
+                                        timeElapsedText = "0" + h + ":" + m;
+                                        if (m < 10) {
+                                            timeElapsedText = "0" + h + ":0" + m;
+                                        }
                                     }
-
-
-
-
-
 
 
                                     // console.log(timeElapsed);
@@ -117,29 +113,13 @@ fetch('https://worldtimeapi.org/api/timezone/PST8PDT')
                                     // }
 
 
-
-
-
-
                                     temp += "<td>" + dueDateText + "</td></tr>";
                                     document.getElementById('fileCount').innerHTML = "Report (" + fileCount + ")";
                                     document.getElementById('data').innerHTML = temp;
                                 });
                         });
-
-
-
-
-
-
-
-
-
-
-
                 });
                 // document.getElementById('data').innerHTML = window.temp;
-
 
             })
             .catch(error => {

@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-#cssTable td, #cssTable th {
+#cssTable td, #customers th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -19,12 +19,4 @@
   text-align: left;
   background-color: #04AA6D;
   color: white;
-}
-
-#cssTable td:nth-child(4) {
-  text-align: center;
-}
-
-#cssTable td:nth-child(5) {
-  text-align: center;
 }
