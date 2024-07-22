@@ -7,68 +7,18 @@
 
 <body>
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript">
-        // Specify the API endpoint for user data
-        const apiUrl = 'https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskTrafficView/?type=16&value=beingmeasured&type=26&value=true&type=30&value=Test&type=30&value=Pilot&type=18&value=HQ&type=30&value=Training&type=21&value=assignment&';
-        var temp = ""
-
-        // Make a GET request using the Fetch API
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(apiData => {
-                // Process the retrieved user data
-                console.log('Data:', apiData);
-                // var temp = "";
-                apiData.forEach((itemData) => {
-                    // temp += "<tr>";
-                    // temp += "<td>" + itemData.reportID + "</td>";
-                    // temp += "<td>" + itemData.primaryProductName + "</td>";
-                    // temp += "<td>" + itemData.dueDate + "</td></tr>";
-                    fetch('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskState/id/' + itemData.taskStateID)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(taskData => {
-                            console.log('taskData:', taskData.description);
-                            window.temp += "<tr>";
-                            window.temp += "<td>" + itemData.reportID + "</td>";     
-                            let techText = taskData.description;
-                            const techNameArray = techText.split('(')
-                            techName = techNameArray[1].replace(')',"")      
-                            window.temp += "<td>" + techName + "</td>";
-                            window.temp += "<td>" + itemData.primaryProductName + "</td>";
-                            window.temp += "<td>" + taskData.stateTime + "</td>";
-                            window.temp += "<td>" + itemData.dueDate + "</td></tr>";
-                            document.getElementById('data').innerHTML = window.temp;
-                        });
-
-                });
-                // document.getElementById('data').innerHTML = window.temp;
-
-
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    </script>
+    <script src="pogiscript.js"></script>
+    
 
     <div class="container">
         <table class="table" id="cssTable">
             <thead>
                 <tr>
-                    <th>File #</th>
+                    <th id="fileCount">Report</th>
                     <th>Tech</th>
                     <th>Product</th>
-                    <th>State Time</th>
-                    <th>Due Date</th>
+                    <th>Elapsed Time</th>
+                    <th>Due In</th>
                 </tr>
             </thead>
             <tbody id="data">
