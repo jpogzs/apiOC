@@ -67,55 +67,127 @@ fetch('https://worldtimeapi.org/api/timezone/PST8PDT')
                                     return response.json();
                                 })
                                 .then(taskData => {
-                                    console.log('Report ID:', itemData.reportID);
-                                    console.log('Tech:', taskData.description);
-                                    console.log('Product Name:', itemData.primaryProductName);
-                                    console.log('Hipster:', reportData.isHipsterJob);
-                                    console.log('State Time:', taskData.stateTime);
-                                    console.log('Due Date:', itemData.dueDate);
+                                    // console.log(taskData.userID);
+                                    let userID = taskData.userID;
 
-                                    temp += "<tr>";
-                                    temp += "<td>" + itemData.reportID + "</td>";
-                                    let techText = taskData.description;
-                                    const techNameArray = techText.split('(')
-                                    techName = techNameArray[1].replace(')', "")
-                                    temp += "<td>" + techName + "</td>";
-                                    temp += "<td>" + pmReport + productName + "</td>";
-
-                                    let stateTime = new Date(taskData.stateTime);
-                                    let timeElapsed = Math.floor((ocTime - stateTime) / (1000 * 60));
-                                    let h = Math.floor(timeElapsed / 60);
-                                    let m = timeElapsed % 60;
-                                    let timeElapsedText = m + " min";
-                                    if (h < 10) {
-                                        timeElapsedText = "0" + h + ":" + m;
-                                        if (m < 10) {
-                                            timeElapsedText = "0" + h + ":0" + m;
-                                        }
-                                    }
+                                    fetch('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/User/id?ids=' + userID)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            return response.json();
+                                        })
+                                        .then(userData => {
+                                            //console.log(userData)    
+                                                                                       
 
 
-                                    // console.log(timeElapsed);
-                                    temp += "<td>" + timeElapsedText + "</td>";
+
+                                            console.log('Report ID:', itemData.reportID);
+                                            console.log('Tech:', taskData.description);
+                                            console.log('Username:', userData[0].userName);
+                                            console.log('Tech Id:', userData[0].techUsername);
+                                            
+                                            console.log('UserID:', taskData.userID);
+                                            console.log('Product Name:', itemData.primaryProductName);
+                                            console.log('Hipster:', reportData.isHipsterJob);
+                                            console.log('State Time:', taskData.stateTime);
+                                            console.log('Due Date:', itemData.dueDate);
+
+                                            temp += "<tr>";
+                                            temp += "<td>" + itemData.reportID + "</td>";
+                                            let techText = taskData.description;
+                                            const techNameArray = techText.split('(')
+                                            techName = techNameArray[1].replace(')', "")
+
+                                            temp += "<td>" + techName + "</td>";
+                                            temp += "<td>" + userData[0].userName + "</td>";
+                                            temp += "<td>" + userData[0].techUsername + "</td>";
+                                            temp += "<td>" + pmReport + productName + "</td>";
+
+                                            let stateTime = new Date(taskData.stateTime);
+                                            let timeElapsed = (ocTime - stateTime) / (1000 * 60); // in minutes
+                                            // console.log(timeElapsed);
+                                            let h = Math.abs(Math.floor(timeElapsed / 60));
+                                            if (h < 10) {
+                                                h = "0" + h;
+                                            }
+                                            let m = Math.abs(Math.floor(timeElapsed % 60));
+                                            if (m < 10) {
+                                                m = "0" + m;
+                                            }
+                                            let s = Math.abs(Math.floor(((timeElapsed % 60) % 1) * 60));
+                                            if (s < 10) {
+                                                s = "0" + s;
+                                            }
+                                            // console.log(s);
+                                            let timeElapsedText = h + ":" + m + ":" + s;
+                                            // if (h < 10) {
+                                            //     timeElapsedText = "0" + h + ":" + m + ":" + s;
+                                            //     if (m < 10) {
+                                            //         timeElapsedText = "0" + h + ":0" + m + ":" + s;
+                                            //         if (s < 10) {
+                                            //             timeElapsedText = "0" + h + ":0" + m + ":0" + s;
+                                            //         }
+                                            //     }
+                                            // }
 
 
-                                    // let dueDateFormat = new Date(itemData.dueDate);
-                                    // let dueDate = dueDateFormat.toUTCString();
-                                    // dueDate = dueDate.replace("GMT","PST")
-
-                                    let dueDateTime = new Date(itemData.dueDate);
-                                    let dueDate = Math.floor((dueDateTime - ocTime) / (1000 * 60));
-                                    let h2 = Math.floor(dueDate / 60);
-                                    let m2 = dueDate % 60;
-                                    let dueDateText = h2 + " hours";
-                                    // if (h2 != 0){
-                                    //    dueDateText = h2 + " hr & " + m2 + " min";
-                                    // }
+                                            // console.log(timeElapsed);
+                                            temp += "<td>" + timeElapsedText + "</td>";                                   
 
 
-                                    temp += "<td>" + dueDateText + "</td></tr>";
-                                    document.getElementById('fileCount').innerHTML = "Report (" + fileCount + ")";
-                                    document.getElementById('data').innerHTML = temp;
+                                            // let dueDateFormat = new Date(itemData.dueDate);
+                                            // let dueDate = dueDateFormat.toUTCString();
+                                            // dueDate = dueDate.replace("GMT","PST")
+
+                                            let dueDateTime = new Date(itemData.dueDate);
+                                            let dueDate = Math.floor((dueDateTime - ocTime) / (1000 * 60));
+                                            let nd = ""
+                                            if (dueDate < 0) {
+                                                nd = "-"
+                                            }
+                                            let hd = Math.abs(Math.floor(dueDate / 60));
+                                            if (hd < 10) {
+                                                hd = "0" + hd;
+                                            }
+                                            let md = Math.abs(Math.floor(dueDate % 60));
+                                            if (md < 10) {
+                                                md = "0" + md;
+                                            }
+                                            let sd = Math.abs(Math.floor(((dueDate % 60) % 1) * 60));
+                                            if (sd < 10) {
+                                                sd = "0" + sd;
+                                            }
+                                            let dueDateText = hd + ":" + md + ":" + sd;
+                                            // if (h2 != 0){
+                                            //    dueDateText = h2 + " hr & " + m2 + " min";
+                                            // }
+
+                                            if (dueDate < 0) {
+                                                temp += "<td style='color:red;'>-" + dueDateText + "</td></tr>";
+                                            }
+                                            else {
+                                                temp += "<td>" + dueDateText + "</td></tr>";
+                                            }
+
+
+                                            // temp += "<td>" + dueDateText + "</td></tr>";
+                                            document.getElementById('fileCount').innerHTML = "Report (" + fileCount + ")";
+                                            document.getElementById('data').innerHTML = temp;
+                                        });
+
+
+
+
+
+
+
+
+
+
+
+
                                 });
                         });
                 });

@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-#cssTable td, #customers th {
+#cssTable td, #cssTable th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -19,4 +19,21 @@
   text-align: left;
   background-color: #04AA6D;
   color: white;
+}
+
+
+#cssTable tr td:first-child, #cssTable th:first-child {
+  text-align: center;
+}
+
+#cssTable tr td:nth-child(4), #cssTable th:nth-child(4) {
+  text-align: center;
+}
+
+#cssTable tr td:nth-child(6), #cssTable th:nth-child(6) {
+   text-align: center;
+}
+
+#cssTable tr td:nth-child(7), #cssTable th:nth-child(7) {
+   text-align: center;
 }
