@@ -1,11 +1,36 @@
-<!-- <caption> POGI SCRIPTS </caption> -->
+<!--  POGI SCRIPTS -->
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>BeingMeasured Reports</title>
+    <script>
+        function myFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("dataTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+        }
+        </script>
 </head>
+
 <body>
+    <p>Search:</p>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+    <button onclick="fetchData()">Change color</button>
     <!-- <link rel="stylesheet" href="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\style.css">
     <script src="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\pogiscript.js"></script>
     <script src="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\sortable.js"></script> -->
@@ -13,13 +38,15 @@
     <link rel="stylesheet" href="style.css">
     <script src="pogiscript.js"></script>
     <script src="sortable.js"></script>
+
     <div class="table-wrap">
-        <table class="sortable" id="cssTable">
+        <table class="sortable" id="dataTable">
             <!-- <caption> Test Only </caption> -->
             <thead>
                 <tr>
                     <th id="fileCount"> Report </th>
                     <th> Tech </th>
+                    <th> Team </th>
                     <th> Username </th>
                     <th> Tech ID </th>
                     <th> Product </th>
@@ -32,5 +59,7 @@
             </tbody>
         </table>
     </div>
+
 </body>
+
 </html>

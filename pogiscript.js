@@ -168,14 +168,23 @@
                                                             // }
 
                                                             // console.log(timeElapsed);
-                                                            temp += "<td>" + timeElapsedText + "</td>";
+                                                            // temp += "<td>" + timeElapsedText + "</td>";
+
+
+                                                            if (h >= 3) {
+                                                                temp += "<td style='color:red;'>" + timeElapsedText + "</td>";
+                                                            }
+                                                            else {
+                                                                temp += "<td>" + timeElapsedText  + "</td>";
+                                                            }
+
 
                                                             // let dueDateFormat = new Date(itemData.dueDate);
                                                             // let dueDate = dueDateFormat.toUTCString();
                                                             // dueDate = dueDate.replace("GMT","PST")
 
                                                             let dueDateTime = new Date(itemData.dueDate);
-                                                            let dueDate = Math.floor((dueDateTime - ocTime) / (1000 * 60));
+                                                            let dueDate = (dueDateTime - ocTime) / (1000 * 60);
                                                             let nd = ""
                                                             if (dueDate < 0) {
                                                                 nd = "-"
