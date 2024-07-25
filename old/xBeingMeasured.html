@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>OC Pogi</title>
+</head>
+
+<body>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        
+        // Specify the API endpoint for user data
+        const apiUrl = 'https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskTrafficView/?type=16&value=beingmeasured&type=26&value=true&type=30&value=Test&type=30&value=Pilot&type=18&value=HQ&type=30&value=Training&type=21&value=assignment&';
+        let temp = "";
+        let fileCount = 0;
+
+        // Make a GET request using the Fetch API
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(apiData => {
+                // Process the retrieved user data
+                console.log('Data:', apiData);
+                // var temp = "";
+                apiData.forEach((itemData) => {
+                    fileCount++;
+                    // temp += "<tr>";
+                    // temp += "<td>" + itemData.reportID + "</td>";
+                    // temp += "<td>" + itemData.primaryProductName + "</td>";
+                    // temp += "<td>" + itemData.dueDate + "</td></tr>";
+
+                    fetch('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/Report/' + itemData.reportID)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(reportData => {
+                            console.log('taskData:', reportData.isHipsterJob);
+                            // let isHipster = reportData.isHipsterJob;
+                            // let isHipster = "";
+                            let productName = itemData.primaryProductName;
+                            if (reportData.isHipsterJob == true) {
+                                productName = "Hipster";
+                            }
+                            fetch('https://api.cmh.platform-prod2.evinternal.net/operations-center/api/TaskState/id/' + itemData.taskStateID)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(taskData => {
+                                    console.log('taskData:', taskData.description);
+                                    temp += "<tr>";
+                                    temp += "<td>" + itemData.reportID + "</td>";
+                                    let techText = taskData.description;
+                                    const techNameArray = techText.split('(')
+                                    techName = techNameArray[1].replace(')', "")
+                                    temp += "<td>" + techName + "</td>";
+                                    temp += "<td>" + productName + "</td>";
+                                    temp += "<td>" + taskData.stateTime + "</td>";
+                                    temp += "<td>" + itemData.dueDate + "</td></tr>";
+                                    document.getElementById('fileCount').innerHTML ="Report (" + fileCount + ")";
+                                    document.getElementById('data').innerHTML = temp;
+                                });
+                        });
+
+
+
+
+
+
+
+
+
+
+
+                });
+                // document.getElementById('data').innerHTML = window.temp;
+
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+
+    <div class="container">
+        <table class="table" id="cssTable">
+            <thead>
+                <tr>
+                    <th id="fileCount">Report</th>                    
+                    <th>Tech</th>
+                    <th>Product</th>
+                    <th>State Time</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

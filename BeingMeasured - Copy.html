@@ -5,17 +5,32 @@
 
 <head>
     <title>BeingMeasured Reports</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        function myFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("dataTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }       
+          }
+        }
+        </script>
 </head>
 
 <body>
-    <!-- <p>Search:</p> -->
-    <input class="form-control" id="myInput" type="text" placeholder="Search..">
-    <!-- <button onclick="fetchData()">Load Data</button> -->
-
+    <p>Search:</p>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+    <button onclick="fetchData()">Change color</button>
     <!-- <link rel="stylesheet" href="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\style.css">
     <script src="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\pogiscript.js"></script>
     <script src="\\mnl-pure01\PublicFolder\1_Coordinators\Pogi\sortable.js"></script> -->
@@ -44,18 +59,6 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#data tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
-
 
 </body>
 
